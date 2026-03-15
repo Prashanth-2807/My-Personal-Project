@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Plant Gallery</title>
+    <meta name="description"
+        content="Create a Plant Gallery account and start discovering beautiful indoor plants with personalised care guides.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* ── Page specific overrides ── */
+        .page-wrapper {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #a8e063 0%, #56ab2f 100%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-area {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 16px 60px;
+            position: relative;
+        }
+
+        /* Glassmorphism card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+            padding: 2.8rem 2.5rem 2.5rem;
+            width: 100%;
+            max-width: 480px;
+            animation: fadeIn 0.9s ease forwards;
+        }
+
+        .glass-card .plant-icon {
+            font-size: 3rem;
+            color: #2ecc71;
+            display: block;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .glass-card h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: #145a32;
+            text-align: center;
+            margin-bottom: 0.3rem;
+        }
+
+        .glass-card .subtitle {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.92rem;
+            color: #555;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Form controls */
+        .form-label {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #2c3e50;
+            margin-bottom: 0.4rem;
+        }
+
+        .input-icon-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            border-radius: 50px;
+            border: 1.5px solid #d0e8d4;
+            background: #fff;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-icon-wrapper:focus-within {
+            border-color: #2ecc71;
+            box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.18);
+        }
+
+        .input-icon-wrapper .bi {
+            position: absolute;
+            left: 14px;
+            color: #888;
+            font-size: 1rem;
+        }
+
+        .input-icon-wrapper input {
+            font-family: 'Outfit', sans-serif;
+            border: none;
+            background: transparent;
+            outline: none;
+            padding: 0.65rem 1rem 0.65rem 2.6rem;
+            font-size: 0.95rem;
+            width: 100%;
+            border-radius: 50px;
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            border-radius: 50px;
+            padding: 0.75rem;
+            width: 100%;
+            margin-top: 1.5rem;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-action:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(39, 174, 96, 0.4);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 1.4rem 0 1.2rem;
+            color: #aaa;
+            font-size: 0.82rem;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #d8e8d8;
+        }
+
+        .login-text {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            color: #555;
+            text-align: center;
+        }
+
+        .login-text a {
+            color: #2d6a4f;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .login-text a:hover {
+            color: #145a32;
+            text-decoration: underline;
+        }
+
+        .error-msg {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            color: #c0392b;
+            display: none;
+            margin-top: 0.4rem;
+            padding-left: 0.5rem;
+        }
+
+        /* Floating Logo */
+        .floating-logo {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 50px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, background 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .floating-logo:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .floating-logo .brand-text {
+            color: #145a32;
+        }
+
+        .wave-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+            transform: rotate(180deg);
+            pointer-events: none;
+        }
+
+        .wave-bottom svg {
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 80px;
+        }
+
+        .wave-bottom .shape-fill {
+            fill: #e9f7ef;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page-wrapper">
+
+        <!-- Floating Logo -->
+        <div class="floating-logo">
+            <i class="bi bi-tree-fill text-success fs-4"></i>
+            <span class="brand-text fw-bold fs-5 font-playfair">Plant Gallery</span>
+        </div>
+
+        <div class="content-area">
+
+            <!-- Glass signup Card -->
+            <div class="glass-card">
+
+                <i class="bi bi-tree-fill plant-icon"></i>
+                <h1>Create Account</h1>
+                <p class="subtitle">Join our green community today 🌿</p>
+
+                <form id="signupForm" action="index.html" method="get" novalidate>
+                    
+                    <!-- Name -->
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">Full Name</label>
+                        <div class="input-icon-wrapper">
+                            <i class="bi bi-person-fill"></i>
+                            <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                        </div>
+                        <span class="error-msg" id="nameError">Please enter your name.</span>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <div class="input-icon-wrapper">
+                            <i class="bi bi-envelope-fill"></i>
+                            <input type="email" id="email" name="email" placeholder="you@example.com" required
+                                autocomplete="email">
+                        </div>
+                        <span class="error-msg" id="emailError">Please enter a valid email address.</span>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-icon-wrapper">
+                            <i class="bi bi-lock-fill"></i>
+                            <input type="password" id="password" name="password" placeholder="Create a strong password"
+                                required autocomplete="new-password">
+                        </div>
+                        <span class="error-msg" id="passwordError">Password must be at least 6 characters.</span>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" class="btn-action">
+                        <i class="bi bi-person-plus-fill me-2"></i>Sign Up
+                    </button>
+
+                </form>
+
+                <div class="divider">or</div>
+
+                <p class="login-text">
+                    Already have an account? <a href="login.html">Log in here</a>
+                </p>
+
+            </div>
+
+            <div class="wave-bottom">
+                <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120"
+                    preserveAspectRatio="none">
+                    <path
+                        d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V120H0V95.8C59.71,118.08,130.83,111.47,195.3,98.6,238.11,90,280.92,72.77,321.39,56.44Z"
+                        class="shape-fill"></path>
+                </svg>
+            </div>
+
+        </div>
+
+        <footer class="bg-dark text-white py-4 footer-custom mt-auto">
+            <div class="container text-center">
+                <h3 class="fw-bold mb-3 font-playfair fs-5">Plant Gallery</h3>
+                <div class="d-flex justify-content-center gap-4 mb-3">
+                    <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="text-white-50 hover-text-white transition-all"><i class="bi bi-instagram fs-5"></i></a>
+                    <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" class="text-white-50 hover-text-white transition-all"><i class="bi bi-facebook fs-5"></i></a>
+                    <a href="https://x.com/" target="_blank" rel="noopener noreferrer" class="text-white-50 hover-text-white transition-all"><i class="bi bi-twitter-x fs-5"></i></a>
+                    <a href="https://github.com/" target="_blank" rel="noopener noreferrer" class="text-white-50 hover-text-white transition-all"><i class="bi bi-github fs-5"></i></a>
+                </div>
+                <p class="text-white-50 mb-0 small">&copy; 2026 Plant Gallery. All rights reserved.</p>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
+            let valid = true;
+
+            const name = document.getElementById('fullName');
+            const nameError = document.getElementById('nameError');
+            const email = document.getElementById('email');
+            const emailError = document.getElementById('emailError');
+            const password = document.getElementById('password');
+            const passwordError = document.getElementById('passwordError');
+
+            function wrapOf(el) { return el.closest('.input-icon-wrapper'); }
+
+            // Name check
+            if (name.value.trim() === '') {
+                nameError.style.display = 'block';
+                wrapOf(name).style.borderColor = '#e74c3c';
+                valid = false;
+            } else {
+                nameError.style.display = 'none';
+                wrapOf(name).style.borderColor = '#2ecc71';
+            }
+
+            // Email check
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value.trim())) {
+                emailError.style.display = 'block';
+                wrapOf(email).style.borderColor = '#e74c3c';
+                valid = false;
+            } else {
+                emailError.style.display = 'none';
+                wrapOf(email).style.borderColor = '#2ecc71';
+            }
+
+            // Password check
+            if (password.value.trim().length < 6) {
+                passwordError.style.display = 'block';
+                wrapOf(password).style.borderColor = '#e74c3c';
+                valid = false;
+            } else {
+                passwordError.style.display = 'none';
+                wrapOf(password).style.borderColor = '#2ecc71';
+            }
+
+            if (!valid) e.preventDefault();
+        });
+
+        // Reset wrapper border on input
+        ['fullName', 'email', 'password'].forEach(id => {
+            document.getElementById(id).addEventListener('input', function () {
+                this.closest('.input-icon-wrapper').style.borderColor = '#d0e8d4';
+                const errId = id === 'fullName' ? 'nameError' : (id === 'email' ? 'emailError' : 'passwordError');
+                document.getElementById(errId).style.display = 'none';
+            });
+        });
+    </script>
+</body>
+
+</html>
